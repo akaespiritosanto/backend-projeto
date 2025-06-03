@@ -48,17 +48,6 @@ module.exports = (sequelize) => {
         ]
     });
 
-    // Define associations
-    Follow.associate = (models) => {
-        Follow.belongsTo(models.User, {
-            foreignKey: 'user_id',
-            as: 'user'
-        });
-        Follow.belongsTo(models.Ad, {
-            foreignKey: 'ad_id',
-            as: 'ad'
-        });
-    };
-
+   
     return Follow;
 };

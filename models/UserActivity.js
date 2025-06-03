@@ -50,17 +50,6 @@ module.exports = (sequelize) => {
         ]
     });
 
-    // Define associations
-    UserActivity.associate = (models) => {
-        UserActivity.belongsTo(models.User, {
-            foreignKey: 'user_id',
-            as: 'user'
-        });
-        UserActivity.belongsTo(models.Ad, {
-            foreignKey: 'ad_id',
-            as: 'ad'
-        });
-    };
 
     return UserActivity;
 };

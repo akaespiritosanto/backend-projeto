@@ -53,17 +53,6 @@ module.exports = (sequelize) => {
         ]
     });
 
-    // Define associations
-    Message.associate = (models) => {
-        Message.belongsTo(models.Chat, {
-            foreignKey: 'chat_id',
-            as: 'chat'
-        });
-        Message.belongsTo(models.User, {
-            foreignKey: 'sender_id',
-            as: 'sender'
-        });
-    };
 
     return Message;
 };

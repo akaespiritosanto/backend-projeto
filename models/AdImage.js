@@ -29,13 +29,5 @@ module.exports = (sequelize) => {
         underscored: true
     });
 
-    // Define associations
-    AdImage.associate = (models) => {
-        AdImage.belongsTo(models.Ad, {
-            foreignKey: 'ad_id',
-            as: 'ad'
-        });
-    };
-
     return AdImage;
 };

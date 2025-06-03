@@ -47,17 +47,6 @@ module.exports = (sequelize) => {
         underscored: true
     });
 
-    // Define associations
-    Review.associate = (models) => {
-        Review.belongsTo(models.User, {
-            foreignKey: 'user_id',
-            as: 'reviewer'
-        });
-        Review.belongsTo(models.User, {
-            foreignKey: 'reviewed_user_id',
-            as: 'reviewedUser'
-        });
-    };
-
+ 
     return Review;
 };

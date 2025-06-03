@@ -39,17 +39,6 @@ module.exports = (sequelize) => {
         underscored: true
     });
 
-    // Define associations
-    Comment.associate = (models) => {
-        Comment.belongsTo(models.User, {
-            foreignKey: 'user_id',
-            as: 'user'
-        });
-        Comment.belongsTo(models.Ad, {
-            foreignKey: 'ad_id',
-            as: 'ad'
-        });
-    };
 
     return Comment;
 };
