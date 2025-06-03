@@ -1,10 +1,5 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('mysql://root:password@localhost:3306/ProjetoBE', {
-    pool: {
-        max: 10,
-        min: 0       
-    }
-});
+const sequelize = new Sequelize('mysql://root:password@localhost:3306/ProjetoBE');
 
 
 const User = require('./models/User.js')(sequelize, Model, DataTypes);
@@ -77,62 +72,65 @@ Message.belongsTo(User, {foreignKey: 'sender_id', as: 'sender'});
 
 
 
-(async () => {
-    try {
-        await sequelize.sync({ force: true });   
+if (require.main === module) {
+    (async () => {
+        try {
+            await sequelize.sync({ force: true });   
 
-        const user = await User.create({
-            username: 'Pedro240',
-            email: 'test@gmail.com',
-            password: 'test',
-            address: 'Funchal',
-            phone: '912945654',
-            role: 'user'
-        });
+            const user = await User.create({
+                username: 'Pedro240',
+                email: 'test@gmail.com',
+                password: 'test',
+                address: 'Funchal',
+                phone: '912945654',
+                role: 'user'
+            });
 
-        const user1 = await User.create({
-            username: 'David240',
-            email: 'dada@gmail.com',
-            password: 'test',
-            address: 'Funchal',
-            phone: '912945654',
-            role: 'user'
-        });
+            const user1 = await User.create({
+                username: 'David240',
+                email: 'dada@gmail.com',
+                password: 'test',
+                address: 'Funchal',
+                phone: '912945654',
+                role: 'user'
+            });
 
-        // Create a category first since ads need a category
-        const category = await Category.create({
-            category_name: 'Electronics',
-            sub_category_name: 'Smartphones'
-        });
+            // Create a category first since ads need a category
+            const category = await Category.create({
+                category_name: 'Electronics',
+                sub_category_name: 'Smartphones'
+            });
 
-        // Create an ad instead of a book
-        const ad = await Ad.create({
-            user_id: user.user_id,
-            category_id: category.category_id,
-            title: 'iPhone 13 Pro - Like New',
-            product_name: 'iPhone 13 Pro',
-            address: 'Funchal',
-            price: 799.99,
-            product_condition: 'Excellent',
-            description: 'iPhone 13 Pro 256GB in perfect condition with original box and accessories.',
-            active_promotion: true,
-            keywords: 'apple,iphone,smartphone'
-        });
+            // Create an ad instead of a book
+            const ad = await Ad.create({
+                user_id: user.user_id,
+                category_id: category.category_id,
+                title: 'iPhone 13 Pro - Like New',
+                product_name: 'iPhone 13 Pro',
+                address: 'Funchal',
+                price: 799.99,
+                product_condition: 'Excellent',
+                description: 'iPhone 13 Pro 256GB in perfect condition with original box and accessories.',
+                active_promotion: true,
+                keywords: 'apple,iphone,smartphone'
+            });
 
-        // Create a comment instead of a loan
-        const comment = await Comment.create({
-            user_id: user1.user_id,
-            ad_id: ad.ad_id,
-            comment: 'Is this still available?'
-        });
+            // Create a comment instead of a loan
+            const comment = await Comment.create({
+                user_id: user1.user_id,
+                ad_id: ad.ad_id,
+                comment: 'Is this still available?'
+            });
 
-        console.log('Database seeded successfully!');
-    } catch (error) {
-        console.error('Error seeding database:', error);
-    }
-})();
+            console.log('Database seeded successfully!');
+        } catch (error) {
+            console.error('Error seeding database:', error);
+        }
+    })();
+}
 
 module.exports = { 
+    sequelize,
     User,
     UserActivity,
     Review,

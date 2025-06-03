@@ -1,4 +1,4 @@
-var jwt = require('jsonwebtoken');
+/*var jwt = require('jsonwebtoken');
 
 function authenticateTokenFromSession(req, res, next) {
   const token = req.session.token;
@@ -35,3 +35,4 @@ module.exports = {
     authenticateTokenFromHeaders,
     generateAccessToken    
 }
+*/

@@ -9,10 +9,23 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// Import database models and initialization function
+var db = require('./db_sequelize');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+// Initialize database before starting the server
+(async () => {
+  try {
+    await db.sequelize.sync({ force: true });
+    console.log('Database synchronized successfully');
+  } catch (error) {
+    console.error('Failed to initialize database:', error);
+  }
+})();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -45,3 +58,4 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
