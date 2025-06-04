@@ -1,18 +1,24 @@
 
-var dotenv = require('dotenv');
-dotenv.config();
+require('dotenv').config();
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
 
 // Import database models and initialization function
-var db = require('./db_sequelize');
+const db = require('./db_sequelize');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// Import routers
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const adsRouter = require('./routes/ads');
+const categoriesRouter = require('./routes/categories');
+const commentsRouter = require('./routes/comments');
+const chatsRouter = require('./routes/chats');
+const messagesRouter = require('./routes/messages');
 
 // Configuração condicional do Swagger
 let swaggerUi, swaggerFile;
@@ -23,13 +29,16 @@ try {
   console.log('Swagger documentation not available. Run "npm run swagger-autogen" first.');
 }
 
-var app = express();
+const app = express();
 
 // Initialize database before starting the server
 (async () => {
   try {
-    await db.sequelize.sync({ force: true });
+    await db.sequelize.sync({ force: false }); // Altere para true apenas se quiser recriar as tabelas
     console.log('Database synchronized successfully');
+    
+    // Chamar a função de seed após a sincronização
+    await db.seedDatabase();
   } catch (error) {
     console.error('Failed to initialize database:', error);
   }
@@ -44,9 +53,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
+// Register routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/ads', adsRouter);
+app.use('/categories', categoriesRouter);
+app.use('/comments', commentsRouter);
+app.use('/chats', chatsRouter);
+app.use('/messages', messagesRouter);
 
 // Configuração condicional da rota do Swagger
 if (swaggerUi && swaggerFile) {
@@ -72,6 +88,10 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+
+
+
 
 
 

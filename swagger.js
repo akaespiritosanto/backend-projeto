@@ -14,7 +14,8 @@ const doc = {
     { name: 'Ads', description: 'Endpoints para gerenciamento de anúncios' },
     { name: 'Categories', description: 'Endpoints para gerenciamento de categorias' },
     { name: 'Comments', description: 'Endpoints para gerenciamento de comentários' },
-    { name: 'Chats', description: 'Endpoints para gerenciamento de chats' }
+    { name: 'Chats', description: 'Endpoints para gerenciamento de chats' },
+    { name: 'Messages', description: 'Endpoints para gerenciamento de mensagens' }
   ],
   definitions: {
     User: {
@@ -58,11 +59,26 @@ const doc = {
       buyer_id: 1,
       seller_id: 2,
       created_at: '2023-01-01T00:00:00.000Z'
+    },
+    Message: {
+      message_id: 1,
+      chat_id: 1,
+      sender_id: 1,
+      content: 'Hello, is this still available?',
+      created_at: '2023-01-01T00:00:00.000Z'
     }
   }
 };
 
 const outputFile = './swagger.json';
-const endpointsFiles = ['./app.js'];
+const endpointsFiles = [
+  './routes/index.js',
+  './routes/users.js',
+  './routes/ads.js',
+  './routes/categories.js',
+  './routes/comments.js',
+  './routes/chats.js',
+  './routes/messages.js'
+];
 
 swaggerAutogen(outputFile, endpointsFiles, doc);

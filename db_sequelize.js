@@ -70,73 +70,77 @@ Chat.hasMany(Message, {foreignKey: 'chat_id'});
 Message.belongsTo(Chat, {foreignKey: 'chat_id'});
 Message.belongsTo(User, {foreignKey: 'sender_id', as: 'sender'});
 
-
-
-if (require.main === module) {
-    (async () => {
-        try {
-            await sequelize.sync({ force: true });   
-            console.log('Database tables created successfully');
-
-            // Create users
-            const user = await User.create({
-                username: 'Pedro240',
-                email: 'test@gmail.com',
-                password: 'test',
-                address: 'Funchal',
-                phone: '912945654',
-                role: 'user'
-            });
-            console.log('User Pedro240 created with ID:', user.user_id);
-
-            const user1 = await User.create({
-                username: 'David240',
-                email: 'dada@gmail.com',
-                password: 'test',
-                address: 'Funchal',
-                phone: '912945654',
-                role: 'user'
-            });
-            console.log('User David240 created with ID:', user1.user_id);
-
-            // Create a category
-            const category = await Category.create({
-                category_name: 'Electronics',
-                sub_category_name: 'Smartphones'
-            });
-            console.log('Category created with ID:', category.category_id);
-
-            // Create an ad
-            const ad = await Ad.create({
-                user_id: user.user_id,
-                category_id: category.category_id,
-                title: 'iPhone 13 Pro - Like New',
-                product_name: 'iPhone 13 Pro',
-                address: 'Funchal',
-                price: 799.99,
-                product_condition: 'Excellent',
-                description: 'iPhone 13 Pro 256GB in perfect condition with original box and accessories.',
-                active_promotion: true,
-                keywords: 'apple,iphone,smartphone'
-            });
-            console.log('Ad created with ID:', ad.ad_id);
-
-            // Create a comment
-            const comment = await Comment.create({
-                user_id: user1.user_id,
-                ad_id: ad.ad_id,
-                comment: 'Is this still available?'
-            });
-            console.log('Comment created with ID:', comment.comment_id);
-
-            console.log('Database seeded successfully!');
-        } catch (error) {
-            console.error('Error seeding database:', error);
-            console.error('Error details:', error.stack);
+// Função para semear o banco de dados
+const seedDatabase = async () => {
+    try {
+        // Verificar se já existem dados
+        const userCount = await User.count();
+        if (userCount > 0) {
+            console.log('Database already has data, skipping seed');
+            return;
         }
-    })();
-}
 
+        console.log('Seeding database...');
+        
+        // Create users
+        const user = await User.create({
+            username: 'Pedro240',
+            email: 'test@gmail.com',
+            password: 'test',
+            address: 'Funchal',
+            phone: '912945654',
+            role: 'user'
+        });
+        console.log('User Pedro240 created with ID:', user.user_id);
+
+        const user1 = await User.create({
+            username: 'David240',
+            email: 'dada@gmail.com',
+            password: 'test',
+            address: 'Funchal',
+            phone: '912945654',
+            role: 'user'
+        });
+        console.log('User David240 created with ID:', user1.user_id);
+
+        // Create a category
+        const category = await Category.create({
+            category_name: 'Electronics',
+            sub_category_name: 'Smartphones'
+        });
+        console.log('Category created with ID:', category.category_id);
+
+        // Create an ad
+        const ad = await Ad.create({
+            user_id: user.user_id,
+            category_id: category.category_id,
+            title: 'iPhone 13 Pro - Like New',
+            product_name: 'iPhone 13 Pro',
+            address: 'Funchal',
+            price: 799.99,
+            product_condition: 'Excellent',
+            description: 'iPhone 13 Pro 256GB in perfect condition with original box and accessories.',
+            active_promotion: true,
+            keywords: 'apple,iphone,smartphone'
+        });
+        console.log('Ad created with ID:', ad.ad_id);
+
+        // Create a comment
+        const comment = await Comment.create({
+            user_id: user1.user_id,
+            ad_id: ad.ad_id,
+            comment: 'Is this still available?'
+        });
+        console.log('Comment created with ID:', comment.comment_id);
+
+        console.log('Database seeded successfully!');
+    } catch (error) {
+        console.error('Error seeding database:', error);
+        console.error('Error details:', error.stack);
+    }
+};
+
+// Exportar a função de seed junto com os modelos
 module.exports = { 
     sequelize,
     User,
@@ -149,5 +153,6 @@ module.exports = {
     Chat,
     Category,
     AdImage,
-    Ad
-}
+    Ad,
+    seedDatabase
+};

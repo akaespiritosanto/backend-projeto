@@ -2,6 +2,41 @@ const Comment = require('../db_sequelize.js').Comment;
 const User = require('../db_sequelize.js').User;
 const Ad = require('../db_sequelize.js').Ad;
 
+async function getAllComments(req, res) {
+    try {
+        const comments = await Comment.findAll({
+            include: [
+                { model: User, attributes: ['user_id', 'username'] }
+            ],
+            order: [['created_at', 'DESC']]
+        });
+        
+        res.json(comments);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+async function getCommentById(req, res) {
+    const commentId = req.params.id;
+    
+    try {
+        const comment = await Comment.findByPk(commentId, {
+            include: [
+                { model: User, attributes: ['user_id', 'username'] }
+            ]
+        });
+        
+        if (comment) {
+            res.json(comment);
+        } else {
+            res.status(404).json({ message: "Comment not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 async function getCommentsByAd(req, res) {
     const adId = req.params.adId;
     
@@ -101,8 +136,11 @@ async function deleteComment(req, res) {
 }
 
 module.exports = {
+    getAllComments,
+    getCommentById,
     getCommentsByAd,
     createComment,
     updateComment,
     deleteComment
 };
+
