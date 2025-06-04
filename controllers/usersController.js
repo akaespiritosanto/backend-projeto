@@ -1,4 +1,5 @@
 const User = require('../db_sequelize.js').User;
+const { Op } = require('sequelize');
 
 async function getAllUsers(req, res) {
     try {
@@ -57,8 +58,82 @@ async function createUser(req, res) {
     }
 }
 
+async function updateUser(req, res) {
+    const userId = req.params.id;
+    
+    try {
+        // Verificar se o usuário existe
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        
+        // Verificar se está tentando atualizar para um email já existente
+        if (req.body.email) {
+            const existingEmail = await User.findOne({ 
+                where: { 
+                    email: req.body.email,
+                    user_id: { [Op.ne]: userId }
+                } 
+            });
+            if (existingEmail) {
+                return res.status(400).json({ message: "Email already in use" });
+            }
+        }
+        
+        // Verificar se está tentando atualizar para um username já existente
+        if (req.body.username) {
+            const existingUsername = await User.findOne({ 
+                where: { 
+                    username: req.body.username,
+                    user_id: { [Op.ne]: userId }
+                } 
+            });
+            if (existingUsername) {
+                return res.status(400).json({ message: "Username already taken" });
+            }
+        }
+        
+        // Atualizar usuário
+        await User.update(req.body, { where: { user_id: userId } });
+        
+        // Buscar usuário atualizado
+        const updatedUser = await User.findByPk(userId, {
+            attributes: { exclude: ['password'] }
+        });
+        
+        res.json({
+            message: "User updated successfully",
+            user: updatedUser
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+async function deleteUser(req, res) {
+    const userId = req.params.id;
+    
+    try {
+        // Verificar se o usuário existe
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        
+        // Deletar usuário
+        await User.destroy({ where: { user_id: userId } });
+        
+        res.json({ message: "User deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
     getAllUsers,
     getUserById,
-    createUser
+    createUser,
+    updateUser,
+    deleteUser
 };

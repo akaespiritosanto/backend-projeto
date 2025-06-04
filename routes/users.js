@@ -52,6 +52,53 @@ router.get('/:id', usersController.getUserById);
  */
 router.post('/', usersController.createUser);
 
+/**
+ * @swagger
+ * /users/{id}:
+ *   put:
+ *     tags: [Users]
+ *     summary: Atualiza um usuário
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/definitions/User'
+ *     responses:
+ *       200:
+ *         description: Usuário atualizado com sucesso
+ *       404:
+ *         description: Usuário não encontrado
+ */
+router.put('/:id', usersController.updateUser);
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     tags: [Users]
+ *     summary: Deleta um usuário
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Usuário deletado com sucesso
+ *       404:
+ *         description: Usuário não encontrado
+ */
+router.delete('/:id', usersController.deleteUser);
+
 module.exports = router;
+
 
 
