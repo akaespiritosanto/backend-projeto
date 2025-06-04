@@ -1,0 +1,212 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Marketplace API",
+    "description": "API RESTful para uma aplicação de marketplace",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Endpoints para gerenciamento de usuários"
+    },
+    {
+      "name": "Ads",
+      "description": "Endpoints para gerenciamento de anúncios"
+    },
+    {
+      "name": "Categories",
+      "description": "Endpoints para gerenciamento de categorias"
+    },
+    {
+      "name": "Comments",
+      "description": "Endpoints para gerenciamento de comentários"
+    },
+    {
+      "name": "Chats",
+      "description": "Endpoints para gerenciamento de chats"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "number",
+          "example": 1
+        },
+        "username": {
+          "type": "string",
+          "example": "Pedro240"
+        },
+        "address": {
+          "type": "string",
+          "example": "Funchal"
+        },
+        "email": {
+          "type": "string",
+          "example": "test@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        },
+        "phone": {
+          "type": "string",
+          "example": "912945654"
+        },
+        "role": {
+          "type": "string",
+          "example": "user"
+        },
+        "created": {
+          "type": "string",
+          "example": "2023-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "Ad": {
+      "type": "object",
+      "properties": {
+        "ad_id": {
+          "type": "number",
+          "example": 1
+        },
+        "user_id": {
+          "type": "number",
+          "example": 1
+        },
+        "category_id": {
+          "type": "number",
+          "example": 1
+        },
+        "title": {
+          "type": "string",
+          "example": "iPhone 13 Pro - Like New"
+        },
+        "product_name": {
+          "type": "string",
+          "example": "iPhone 13 Pro"
+        },
+        "address": {
+          "type": "string",
+          "example": "Funchal"
+        },
+        "price": {
+          "type": "number",
+          "example": 799.99
+        },
+        "product_condition": {
+          "type": "string",
+          "example": "Excellent"
+        },
+        "description": {
+          "type": "string",
+          "example": "iPhone 13 Pro 256GB in perfect condition with original box and accessories."
+        },
+        "active_promotion": {
+          "type": "boolean",
+          "example": true
+        },
+        "keywords": {
+          "type": "string",
+          "example": "apple,iphone,smartphone"
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "category_id": {
+          "type": "number",
+          "example": 1
+        },
+        "category_name": {
+          "type": "string",
+          "example": "Electronics"
+        },
+        "sub_category_name": {
+          "type": "string",
+          "example": "Smartphones"
+        }
+      }
+    },
+    "Comment": {
+      "type": "object",
+      "properties": {
+        "comment_id": {
+          "type": "number",
+          "example": 1
+        },
+        "user_id": {
+          "type": "number",
+          "example": 1
+        },
+        "ad_id": {
+          "type": "number",
+          "example": 1
+        },
+        "comment": {
+          "type": "string",
+          "example": "Is this still available?"
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2023-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "Chat": {
+      "type": "object",
+      "properties": {
+        "chat_id": {
+          "type": "number",
+          "example": 1
+        },
+        "ad_id": {
+          "type": "number",
+          "example": 1
+        },
+        "buyer_id": {
+          "type": "number",
+          "example": 1
+        },
+        "seller_id": {
+          "type": "number",
+          "example": 2
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2023-01-01T00:00:00.000Z"
+        }
+      }
+    }
+  }
+}

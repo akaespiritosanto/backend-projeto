@@ -1,5 +1,4 @@
 
-
 var dotenv = require('dotenv');
 dotenv.config();
 
@@ -14,6 +13,15 @@ var db = require('./db_sequelize');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+// Configuração condicional do Swagger
+let swaggerUi, swaggerFile;
+try {
+  swaggerUi = require('swagger-ui-express');
+  swaggerFile = require('./swagger.json');
+} catch (error) {
+  console.log('Swagger documentation not available. Run "npm run swagger-autogen" first.');
+}
 
 var app = express();
 
@@ -40,6 +48,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+// Configuração condicional da rota do Swagger
+if (swaggerUi && swaggerFile) {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+  console.log('Swagger documentation available at /api-docs');
+}
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -58,4 +72,6 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+
 
